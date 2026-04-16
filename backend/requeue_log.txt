@@ -1,0 +1,5 @@
+Re-queuing 30 documents...
+Traceback (most recent call last):
+  File "/mnt/c/bank_austria/backend/requeue_pending.py", line 16, in <module>
+    print(f"Queued {d.id} - {d.country}")
+AttributeError: 'RuleSourceDocument' object has no attribute 'country'

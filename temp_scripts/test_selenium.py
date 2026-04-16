@@ -1,0 +1,15 @@
+import undetected_chromedriver as uc
+import time
+print('Starting Headless Chrome...')
+options = uc.ChromeOptions()
+options.add_argument('--headless')
+options.add_argument('--no-sandbox')
+options.add_argument('--disable-dev-shm-usage')
+driver = uc.Chrome(options=options, version_main=145)
+driver.get('https://www.oecd.org')
+time.sleep(15)
+print('TITLE:', driver.title)
+driver.get('https://www.oecd.org/en/networks/global-forum-tax-transparency/resources/aeoi-implementation-portal/tax-identification-numbers.html')
+time.sleep(15)
+print('TITLE2:', driver.title)
+driver.quit()

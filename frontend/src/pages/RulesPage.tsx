@@ -1,13 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { ruleService } from '@/services';
-import { Card, Badge, Spinner, EmptyState } from '@/components/common';
+import { Card, Badge, Spinner, EmptyState, Pagination } from '@/components/common';
 import { BookOpen, Search } from 'lucide-react';
 import type { Country } from '@/types';
 
 const RulesPage: React.FC = () => {
   const [selectedCountry, setSelectedCountry] = useState<string>('');
   const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
+
+  // Reset to first page when filters change
+  useEffect(() => {
+    setPage(1);
+  }, [selectedCountry, search]);
 
   const { data: countries, isLoading: countriesLoading } = useQuery({
     queryKey: ['countries'],
@@ -15,9 +21,9 @@ const RulesPage: React.FC = () => {
   });
 
   const { data: rules, isLoading: rulesLoading } = useQuery({
-    queryKey: ['rules', selectedCountry, search],
+    queryKey: ['rules', selectedCountry, search, page],
     queryFn: () => {
-      const params: Record<string, string> = {};
+      const params: Record<string, string> = { page: page.toString() };
       if (selectedCountry) params.country = selectedCountry;
       if (search) params.search = search;
       return ruleService.listRules(params);
@@ -52,9 +58,9 @@ const RulesPage: React.FC = () => {
                 selectedCountry === '' ? 'bg-primary-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
-              All ({countries?.count ?? 0})
+              All ({countries?.length ?? 0})
             </button>
-            {countries?.results.map((country: Country) => (
+            {countries?.map((country: Country) => (
               <button
                 key={country.code}
                 onClick={() => setSelectedCountry(country.code)}
@@ -72,7 +78,17 @@ const RulesPage: React.FC = () => {
       </Card>
 
       {/* Rules table */}
-      <Card title={`Rules (${rules?.count ?? 0})`}>
+      <Card title={
+        <div className="flex justify-between items-center w-full pr-4">
+          <span>Rules ({rules?.count ?? 0})</span>
+          {rules?.status_counts && (
+            <div className="flex gap-4 text-sm font-normal">
+              <span className="text-green-600">Active: {rules.status_counts.active}</span>
+              <span className="text-gray-500">Inactive: {rules.status_counts.inactive}</span>
+            </div>
+          )}
+        </div>
+      }>
         <div className="mb-4">
           <div className="relative">
             <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -90,60 +106,72 @@ const RulesPage: React.FC = () => {
           <div className="flex justify-center py-8">
             <Spinner />
           </div>
-        ) : rules?.results.length === 0 ? (
+        ) : rules?.results?.length === 0 ? (
           <EmptyState message="No rules found" icon={<BookOpen size={32} />} />
         ) : (
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead>
-                <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Country</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pattern</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Length</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Confidence</th>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                {rules?.results.map((rule) => (
-                  <tr key={rule.id} className="hover:bg-gray-50">
-                    <td className="px-4 py-3">
-                      <div>
-                        <span className="text-sm font-bold text-gray-900">{rule.country_code}</span>
-                        <br />
-                        <span className="text-xs text-gray-500">{rule.country_name}</span>
-                      </div>
-                    </td>
-                    <td className="px-4 py-3">
-                      <Badge variant={ruleTypeVariant[rule.rule_type] ?? 'default'}>
-                        {rule.rule_type}
-                      </Badge>
-                    </td>
-                    <td className="px-4 py-3 text-sm text-gray-700 max-w-xs">
-                      {rule.description}
-                    </td>
-                    <td className="px-4 py-3 text-xs font-mono text-gray-600 max-w-[200px] truncate">
-                      {rule.regex_pattern || '–'}
-                    </td>
-                    <td className="px-4 py-3 text-sm text-gray-600">
-                      {rule.min_length != null || rule.max_length != null
-                        ? `${rule.min_length ?? '?'}–${rule.max_length ?? '?'}`
-                        : '–'}
-                    </td>
-                    <td className="px-4 py-3 text-sm text-gray-600">
-                      {Math.round(rule.confidence_score * 100)}%
-                    </td>
-                    <td className="px-4 py-3">
-                      <Badge variant={rule.is_active ? 'success' : 'default'}>
-                        {rule.is_active ? 'Active' : 'Inactive'}
-                      </Badge>
-                    </td>
+          <div className="space-y-4">
+            <div className="overflow-x-auto">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead>
+                  <tr>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Country</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pattern</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Length</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Confidence</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {rules?.results?.map((rule: any) => (
+                    <tr key={rule.id} className="hover:bg-gray-50">
+                      <td className="px-4 py-3">
+                        <div>
+                          <span className="text-sm font-bold text-gray-900">{rule.country_code}</span>
+                          <br />
+                          <span className="text-xs text-gray-500">{rule.country_name}</span>
+                        </div>
+                      </td>
+                      <td className="px-4 py-3">
+                        <Badge variant={ruleTypeVariant[rule.rule_type] ?? 'default'}>
+                          {rule.rule_type}
+                        </Badge>
+                      </td>
+                      <td className="px-4 py-3 text-sm text-gray-700 max-w-xs">
+                        {rule.description}
+                      </td>
+                      <td className="px-4 py-3 text-xs font-mono text-gray-600 max-w-[200px] truncate">
+                        {rule.regex_pattern || '–'}
+                      </td>
+                      <td className="px-4 py-3 text-sm text-gray-600">
+                        {rule.min_length != null || rule.max_length != null
+                          ? `${rule.min_length ?? '?'}–${rule.max_length ?? '?'}`
+                          : '–'}
+                      </td>
+                      <td className="px-4 py-3 text-sm text-gray-600">
+                        {Math.round(rule.confidence_score * 100)}%
+                      </td>
+                      <td className="px-4 py-3">
+                        <Badge variant={rule.is_active ? 'success' : 'default'}>
+                          {rule.is_active ? 'Active' : 'Inactive'}
+                        </Badge>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {rules?.count > 25 && (
+              <div className="pt-4 border-t border-gray-100">
+                <Pagination 
+                  currentPage={page} 
+                  count={rules.count} 
+                  pageSize={25} 
+                  onPageChange={setPage} 
+                />
+              </div>
+            )}
           </div>
         )}
       </Card>

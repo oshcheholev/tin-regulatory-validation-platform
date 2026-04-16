@@ -45,9 +45,11 @@ def validate_tin(country_code: str, tin: str) -> dict:
     for rule in rules:
         rule_passed = True
         rule_explanation = []
+        has_criteria = False
 
         # Check regex pattern
         if rule.regex_pattern:
+            has_criteria = True
             try:
                 if re.fullmatch(rule.regex_pattern, tin_normalized):
                     rule_explanation.append(f'Matches pattern: {rule.regex_pattern}')
@@ -59,34 +61,65 @@ def validate_tin(country_code: str, tin: str) -> dict:
 
         # Check length constraints
         tin_len = len(tin_normalized)
-        if rule.min_length is not None and tin_len < rule.min_length:
-            rule_passed = False
-            rule_explanation.append(f'Too short: {tin_len} < {rule.min_length}')
-        if rule.max_length is not None and tin_len > rule.max_length:
-            rule_passed = False
-            rule_explanation.append(f'Too long: {tin_len} > {rule.max_length}')
+        if rule.min_length is not None:
+            has_criteria = True
+            if tin_len < rule.min_length:
+                rule_passed = False
+                rule_explanation.append(f'Too short: {tin_len} < {rule.min_length}')
+        if rule.max_length is not None:
+            has_criteria = True
+            if tin_len > rule.max_length:
+                rule_passed = False
+                rule_explanation.append(f'Too long: {tin_len} > {rule.max_length}')
+
+        if not has_criteria:
+            continue
 
         if rule_passed:
-            matched_rules.append(rule.id)
+            matched_rules.append(rule)
             explanations.append(f'✓ Rule [{rule.rule_type}]: {rule.description}')
         else:
-            failed_rules.append(rule.id)
+            failed_rules.append(rule)
             explanations.append(f'✗ Rule [{rule.rule_type}]: {"; ".join(rule_explanation)}')
 
-    result['matched_rule_ids'] = matched_rules
-    result['failed_rule_ids'] = failed_rules
+    matched_rule_ids = [r.id for r in matched_rules]
+    failed_rule_ids = [r.id for r in failed_rules]
+    result['matched_rule_ids'] = matched_rule_ids
+    result['failed_rule_ids'] = failed_rule_ids
 
-    if matched_rules:
-        result['is_valid'] = True
-        result['status'] = 'valid'
-        result['explanation'] = (
-            f'TIN "{tin}" is valid for {country.name}.\n' + '\n'.join(explanations)
-        )
+    # Group rules by type
+    rules_by_type = {}
+    for rule in matched_rules + failed_rules:
+        if rule.rule_type not in rules_by_type:
+            rules_by_type[rule.rule_type] = {'matched': [], 'failed': []}
+    for rule in matched_rules:
+        rules_by_type[rule.rule_type]['matched'].append(rule)
+    for rule in failed_rules:
+        rules_by_type[rule.rule_type]['failed'].append(rule)
+
+    is_valid = True
+    if not rules_by_type:
+        is_valid = False
+        result['status'] = 'unknown'
+        result['explanation'] = f'No programmatic validation criteria (regex or length) found in the active rules for {country.name}'
     else:
-        result['is_valid'] = False
-        result['status'] = 'invalid'
-        result['explanation'] = (
-            f'TIN "{tin}" is invalid for {country.name}.\n' + '\n'.join(explanations)
-        )
+        # A TIN is valid only if, for every rule type present, it passes AL LEAST ONE rule of that type
+        for rule_type, lists in rules_by_type.items():
+            if not lists['matched']:
+                is_valid = False
+                break
+        
+        if is_valid:
+            result['is_valid'] = True
+            result['status'] = 'valid'
+            result['explanation'] = (
+                f'TIN "{tin}" is valid for {country.name}.\n' + '\n'.join(explanations)
+            )
+        else:
+            result['is_valid'] = False
+            result['status'] = 'invalid'
+            result['explanation'] = (
+                f'TIN "{tin}" is invalid for {country.name}.\n' + '\n'.join(explanations)
+            )
 
     return result

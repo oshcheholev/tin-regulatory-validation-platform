@@ -24,6 +24,7 @@ class RuleSourceDocument(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     error_message = models.TextField(blank=True)
     page_count = models.PositiveIntegerField(default=0)
+    extracted_text = models.TextField(blank=True, null=True)
     uploaded_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='documents')
     task_id = models.CharField(max_length=255, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -35,3 +36,26 @@ class RuleSourceDocument(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class OECDSyncLog(models.Model):
+    """Log for OECD PDF scraping/synchronization tasks."""
+    STATUS_CHOICES = [
+        ('running', 'Running'),
+        ('completed', 'Completed'),
+        ('failed', 'Failed'),
+    ]
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='running')
+    start_time = models.DateTimeField(auto_now_add=True)
+    end_time = models.DateTimeField(null=True, blank=True)
+    total_found = models.IntegerField(default=0)
+    downloaded_count = models.IntegerField(default=0)
+    error_count = models.IntegerField(default=0)
+    error_details = models.JSONField(default=dict, blank=True)
+
+    class Meta:
+        db_table = 'oecd_sync_logs'
+        ordering = ['-start_time']
+
+    def __str__(self):
+        return f"OECD Sync at {self.start_time.strftime('%Y-%m-%d %H:%M:%S')}"

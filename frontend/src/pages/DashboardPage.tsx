@@ -77,7 +77,7 @@ const DashboardPage: React.FC = () => {
         />
         <StatCard
           label="Countries Covered"
-          value={countries?.count ?? 0}
+          value={countries?.length ?? 0}
           icon={<Globe size={24} className="text-purple-600" />}
           color="bg-purple-50"
           to="/rules"

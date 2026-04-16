@@ -31,7 +31,8 @@ def process_document_task(self, document_id: int):
         logger.info(f'Extracting text from document {document_id}')
         text, page_count = extract_text_from_pdf(document.file.path)
         document.page_count = page_count
-        document.save(update_fields=['page_count'])
+        document.extracted_text = text
+        document.save(update_fields=['page_count', 'extracted_text'])
 
         # Step 2: Chunk text
         chunks = chunk_text(text)
@@ -52,10 +53,14 @@ def process_document_task(self, document_id: int):
                 code=country_code,
                 defaults={'name': country_name},
             )
+            extracted_regex = rule_data.get('regex_pattern')
+            if extracted_regex == '':
+                extracted_regex = None
+
             _, created = TinRule.objects.get_or_create(
                 country=country,
                 rule_type=rule_data['rule_type'],
-                regex_pattern=rule_data.get('regex_pattern', ''),
+                regex_pattern=extracted_regex,
                 defaults={
                     'source_document': document,
                     'description': rule_data['description'],

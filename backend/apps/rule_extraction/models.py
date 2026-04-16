@@ -36,7 +36,7 @@ class TinRule(models.Model):
     )
     rule_type = models.CharField(max_length=50, choices=RULE_TYPE_CHOICES)
     description = models.TextField()
-    regex_pattern = models.CharField(max_length=500, blank=True)
+    regex_pattern = models.CharField(max_length=500, blank=True, null=True)
     min_length = models.PositiveIntegerField(null=True, blank=True)
     max_length = models.PositiveIntegerField(null=True, blank=True)
     is_active = models.BooleanField(default=True)

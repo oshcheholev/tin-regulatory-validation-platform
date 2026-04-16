@@ -1,0 +1,232 @@
+--- Processing Doc 125 (documents/2/czechia_tin.pdf) ---
+Success: {'document_id': 125, 'rules_created': 2}
+--- Processing Doc 124 (documents/2/cayman_tin.pdf) ---
+Success: {'document_id': 124, 'rules_created': 0}
+--- Processing Doc 123 (documents/2/turks-caicosislands_tin.pdf) ---
+Success: {'document_id': 123, 'rules_created': 0}
+--- Processing Doc 122 (documents/2/russia_tin.pdf) ---
+Success: {'document_id': 122, 'rules_created': 4}
+--- Processing Doc 121 (documents/2/saint-lucia_tin.pdf) ---
+Success: {'document_id': 121, 'rules_created': 1}
+--- Processing Doc 120 (documents/2/bulgaria_tin.pdf) ---
+Success: {'document_id': 120, 'rules_created': 3}
+--- Processing Doc 119 (documents/2/bahamas_tin.pdf) ---
+Success: {'document_id': 119, 'rules_created': 0}
+--- Processing Doc 118 (documents/2/uk_tin.pdf) ---
+Success: {'document_id': 118, 'rules_created': 3}
+--- Processing Doc 117 (documents/2/brunei-darussalam_tin.pdf) ---
+Success: {'document_id': 117, 'rules_created': 3}
+--- Processing Doc 116 (documents/2/curacao_tin.pdf) ---
+Success: {'document_id': 116, 'rules_created': 1}
+--- Processing Doc 115 (documents/2/uae_tin.pdf) ---
+Success: {'document_id': 115, 'rules_created': 0}
+--- Processing Doc 114 (documents/2/turkiye_tin.pdf) ---
+Success: {'document_id': 114, 'rules_created': 3}
+--- Processing Doc 113 (documents/2/argentina_tin.pdf) ---
+Success: {'document_id': 113, 'rules_created': 4}
+--- Processing Doc 112 (documents/2/united-states_tin.pdf) ---
+Success: {'document_id': 112, 'rules_created': 3}
+--- Processing Doc 111 (documents/2/estonia_tin.pdf) ---
+Success: {'document_id': 111, 'rules_created': 4}
+--- Processing Doc 110 (documents/2/ireland_tin.pdf) ---
+Success: {'document_id': 110, 'rules_created': 2}
+--- Processing Doc 109 (documents/2/australia_tin.pdf) ---
+Success: {'document_id': 109, 'rules_created': 3}
+--- Processing Doc 108 (documents/2/italy_tin.pdf) ---
+Success: {'document_id': 108, 'rules_created': 2}
+--- Processing Doc 107 (documents/2/netherlands_tin.pdf) ---
+Success: {'document_id': 107, 'rules_created': 3}
+--- Processing Doc 106 (documents/2/iceland_tin.pdf) ---
+Success: {'document_id': 106, 'rules_created': 4}
+--- Processing Doc 105 (documents/2/greenland_tin.pdf) ---
+Success: {'document_id': 105, 'rules_created': 2}
+--- Processing Doc 104 (documents/2/malta_tin.pdf) ---
+Success: {'document_id': 104, 'rules_created': 5}
+--- Processing Doc 103 (documents/2/saint-vincent-and-the-grenadines_tin.pdf) ---
+Success: {'document_id': 103, 'rules_created': 1}
+--- Processing Doc 102 (documents/2/marshall-islands_tin.pdf) ---
+Success: {'document_id': 102, 'rules_created': 2}
+--- Processing Doc 101 (documents/2/bermuda_tin.pdf) ---
+Success: {'document_id': 101, 'rules_created': 0}
+--- Processing Doc 100 (documents/2/andorra_tin.pdf) ---
+Success: {'document_id': 100, 'rules_created': 10}
+--- Processing Doc 99 (documents/2/croatia_tin.pdf) ---
+Success: {'document_id': 99, 'rules_created': 3}
+--- Processing Doc 98 (documents/2/san-marino_tin.pdf) ---
+Success: {'document_id': 98, 'rules_created': 3}
+--- Processing Doc 97 (documents/2/greece_tin.pdf) ---
+Success: {'document_id': 97, 'rules_created': 1}
+--- Processing Doc 96 (documents/2/belgium_tin.pdf) ---
+Success: {'document_id': 96, 'rules_created': 2}
+--- Processing Doc 95 (documents/2/montserrat_tin.pdf) ---
+Success: {'document_id': 95, 'rules_created': 0}
+--- Processing Doc 94 (documents/2/switzerland_tin.pdf) ---
+Success: {'document_id': 94, 'rules_created': 6}
+--- Processing Doc 93 (documents/2/chile_tin.pdf) ---
+Success: {'document_id': 93, 'rules_created': 3}
+--- Processing Doc 92 (documents/2/india_tin.pdf) ---
+Success: {'document_id': 92, 'rules_created': 6}
+--- Processing Doc 91 (documents/2/japan_tin.pdf) ---
+Success: {'document_id': 91, 'rules_created': 5}
+--- Processing Doc 90 (documents/2/lebanon_tin.pdf) ---
+Success: {'document_id': 90, 'rules_created': 2}
+--- Processing Doc 89 (documents/2/georgia_tin.pdf) ---
+Success: {'document_id': 89, 'rules_created': 3}
+--- Processing Doc 88 (documents/2/aruba_tin.pdf) ---
+Success: {'document_id': 88, 'rules_created': 1}
+--- Processing Doc 87 (documents/2/faroe-islands_tin.pdf) ---
+Success: {'document_id': 87, 'rules_created': 3}
+--- Processing Doc 86 (documents/2/saudi-arabia_tin.pdf) ---
+Success: {'document_id': 86, 'rules_created': 1}
+--- Processing Doc 85 (documents/2/trinidad-and-tobago_tin.pdf) ---
+Success: {'document_id': 85, 'rules_created': 0}
+--- Processing Doc 84 (documents/2/china_tin.pdf) ---
+Success: {'document_id': 84, 'rules_created': 15}
+--- Processing Doc 83 (documents/2/israel_tin.pdf) ---
+Success: {'document_id': 83, 'rules_created': 1}
+--- Processing Doc 82 (documents/2/albania_tin.pdf) ---
+Success: {'document_id': 82, 'rules_created': 4}
+--- Processing Doc 81 (documents/2/hungary_tin.pdf) ---
+Success: {'document_id': 81, 'rules_created': 2}
+--- Processing Doc 80 (documents/2/south-africa_tin.pdf) ---
+Success: {'document_id': 80, 'rules_created': 5}
+--- Processing Doc 79 (documents/2/canada_tin.pdf) ---
+Success: {'document_id': 79, 'rules_created': 2}
+--- Processing Doc 78 (documents/2/luxembourg_tin.pdf) ---
+Success: {'document_id': 78, 'rules_created': 4}
+--- Processing Doc 77 (documents/2/mauritius_tin.pdf) ---
+Success: {'document_id': 77, 'rules_created': 2}
+--- Processing Doc 76 (documents/2/saint-kitts-and-nevis_tin.pdf) ---
+Success: {'document_id': 76, 'rules_created': 2}
+--- Processing Doc 75 (documents/2/peru_tin.pdf) ---
+Success: {'document_id': 75, 'rules_created': 1}
+--- Processing Doc 74 (documents/2/monaco_tin.pdf) ---
+Success: {'document_id': 74, 'rules_created': 0}
+--- Processing Doc 73 (documents/2/kazakhstan_tin.pdf) ---
+Success: {'document_id': 73, 'rules_created': 4}
+--- Processing Doc 72 (documents/2/ghana_tin.pdf) ---
+Success: {'document_id': 72, 'rules_created': 6}
+--- Processing Doc 71 (documents/2/british-virgin-islands_tin.pdf) ---
+Success: {'document_id': 71, 'rules_created': 0}
+--- Processing Doc 70 (documents/2/barbados_tin.pdf) ---
+Success: {'document_id': 70, 'rules_created': 1}
+--- Processing Doc 69 (documents/2/austria_tin.pdf) ---
+Success: {'document_id': 69, 'rules_created': 1}
+--- Processing Doc 68 (documents/2/anguilla_tin.pdf) ---
+Success: {'document_id': 68, 'rules_created': 3}
+--- Processing Doc 67 (documents/2/vanuatu_tin.pdf) ---
+Success: {'document_id': 67, 'rules_created': 1}
+--- Processing Doc 66 (documents/2/qatar_tin.pdf) ---
+Success: {'document_id': 66, 'rules_created': 2}
+--- Processing Doc 65 (documents/2/grenada_tin.pdf) ---
+Success: {'document_id': 65, 'rules_created': 1}
+--- Processing Doc 64 (documents/2/dominica_tin.pdf) ---
+Success: {'document_id': 64, 'rules_created': 3}
+--- Processing Doc 63 (documents/2/sint-maarten_tin.pdf) ---
+Success: {'document_id': 63, 'rules_created': 3}
+--- Processing Doc 62 (documents/2/colombia_tin.pdf) ---
+Success: {'document_id': 62, 'rules_created': 6}
+--- Processing Doc 61 (documents/2/indonesia_tin.pdf) ---
+Success: {'document_id': 61, 'rules_created': 4}
+--- Processing Doc 60 (documents/2/malaysia_tin.pdf) ---
+Success: {'document_id': 60, 'rules_created': 2}
+--- Processing Doc 59 (documents/2/gibraltar_tin.pdf) ---
+Success: {'document_id': 59, 'rules_created': 2}
+--- Processing Doc 58 (documents/2/costa-rica_tin.pdf) ---
+Success: {'document_id': 58, 'rules_created': 5}
+--- Processing Doc 57 (documents/2/brazil_tin.pdf) ---
+Success: {'document_id': 57, 'rules_created': 5}
+--- Processing Doc 56 (documents/2/cyprus_tin.pdf) ---
+Success: {'document_id': 56, 'rules_created': 2}
+--- Processing Doc 55 (documents/2/singapore_tin.pdf) ---
+Success: {'document_id': 55, 'rules_created': 7}
+--- Processing Doc 54 (documents/2/norway_tin.pdf) ---
+Success: {'document_id': 54, 'rules_created': 6}
+--- Processing Doc 53 (documents/2/samoa_tin.pdf) ---
+Success: {'document_id': 53, 'rules_created': 0}
+--- Processing Doc 52 (documents/2/portugal_tin.pdf) ---
+Success: {'document_id': 52, 'rules_created': 9}
+--- Processing Doc 51 (documents/2/new-zealand_tin.pdf) ---
+Success: {'document_id': 51, 'rules_created': 3}
+--- Processing Doc 50 (documents/2/liechtenstein_tin.pdf) ---
+Success: {'document_id': 50, 'rules_created': 2}
+--- Processing Doc 49 (documents/2/guernsey_tin.pdf) ---
+Success: {'document_id': 49, 'rules_created': 9}
+--- Processing Doc 48 (documents/2/germany_tin.pdf) ---
+Success: {'document_id': 48, 'rules_created': 3}
+--- Processing Doc 47 (documents/2/slovenia_tin.pdf) ---
+Success: {'document_id': 47, 'rules_created': 3}
+--- Processing Doc 46 (documents/2/slovak-republic_tin.pdf) ---
+Success: {'document_id': 46, 'rules_created': 3}
+--- Processing Doc 45 (documents/2/hong-kong_tin.pdf) ---
+Success: {'document_id': 45, 'rules_created': 2}
+--- Processing Doc 44 (documents/2/macau_tin.pdf) ---
+Success: {'document_id': 44, 'rules_created': 3}
+--- Processing Doc 43 (documents/2/bahrain_tin.pdf) ---
+Success: {'document_id': 43, 'rules_created': 0}
+--- Processing Doc 42 (documents/2/nauru_tin.pdf) ---
+Success: {'document_id': 42, 'rules_created': 1}
+--- Processing Doc 41 (documents/2/maldives_tin.pdf) ---
+Success: {'document_id': 41, 'rules_created': 1}
+--- Processing Doc 40 (documents/2/denmark_tin.pdf) ---
+Success: {'document_id': 40, 'rules_created': 2}
+--- Processing Doc 39 (documents/2/sweden_tin.pdf) ---
+Success: {'document_id': 39, 'rules_created': 1}
+--- Processing Doc 38 (documents/2/cook-islands_tin.pdf) ---
+Success: {'document_id': 38, 'rules_created': 1}
+--- Processing Doc 37 (documents/2/seychelles_tin.pdf) ---
+Success: {'document_id': 37, 'rules_created': 3}
+--- Processing Doc 36 (documents/2/korea_tin.pdf) ---
+Success: {'document_id': 36, 'rules_created': 5}
+--- Processing Doc 35 (documents/2/poland_tin.pdf) ---
+Success: {'document_id': 35, 'rules_created': 5}
+--- Processing Doc 34 (documents/2/mexico_tin.pdf) ---
+Success: {'document_id': 34, 'rules_created': 2}
+--- Processing Doc 33 (documents/2/spain_tin.pdf) ---
+Success: {'document_id': 33, 'rules_created': 6}
+--- Processing Doc 32 (documents/2/kuwait_tin.pdf) ---
+Success: {'document_id': 32, 'rules_created': 2}
+--- Processing Doc 31 (documents/2/pakistan_tin.pdf) ---
+Success: {'document_id': 31, 'rules_created': 3}
+--- Processing Doc 30 (documents/2/jamaica_tin.pdf) ---
+Success: {'document_id': 30, 'rules_created': 1}
+--- Processing Doc 29 (documents/2/oman_tin.pdf) ---
+Success: {'document_id': 29, 'rules_created': 4}
+--- Processing Doc 28 (documents/2/nigeria_tin.pdf) ---
+Success: {'document_id': 28, 'rules_created': 2}
+--- Processing Doc 27 (documents/2/ukraine_tin.pdf) ---
+Success: {'document_id': 27, 'rules_created': 3}
+--- Processing Doc 26 (documents/2/kenya_tin.pdf) ---
+Success: {'document_id': 26, 'rules_created': 3}
+--- Processing Doc 25 (documents/2/moldova_tin.pdf) ---
+Success: {'document_id': 25, 'rules_created': 1}
+--- Processing Doc 24 (documents/2/azerbaijan_tin.pdf) ---
+Success: {'document_id': 24, 'rules_created': 8}
+--- Processing Doc 23 (documents/2/belize_tin.pdf) ---
+Success: {'document_id': 23, 'rules_created': 2}
+--- Processing Doc 22 (documents/2/armenia_tin.pdf) ---
+Success: {'document_id': 22, 'rules_created': 4}
+--- Processing Doc 21 (documents/2/ecuador_tin.pdf) ---
+Success: {'document_id': 21, 'rules_created': 5}
+--- Processing Doc 20 (documents/2/latvia_tin.pdf) ---
+Success: {'document_id': 20, 'rules_created': 4}
+--- Processing Doc 19 (documents/2/antigua-and-barbuda_tin.pdf) ---
+Success: {'document_id': 19, 'rules_created': 4}
+--- Processing Doc 18 (documents/2/lithuania_tin.pdf) ---
+Success: {'document_id': 18, 'rules_created': 5}
+--- Processing Doc 17 (documents/2/finland_tin.pdf) ---
+Success: {'document_id': 17, 'rules_created': 3}
+--- Processing Doc 16 (documents/2/romania_tin.pdf) ---
+Success: {'document_id': 16, 'rules_created': 3}
+--- Processing Doc 15 (documents/2/isle-of-man_tin.pdf) ---
+Success: {'document_id': 15, 'rules_created': 2}
+--- Processing Doc 14 (documents/2/jersey_tin.pdf) ---
+Success: {'document_id': 14, 'rules_created': 3}
+--- Processing Doc 13 (documents/2/uruguay_tin.pdf) ---
+Success: {'document_id': 13, 'rules_created': 3}
+--- Processing Doc 12 (documents/2/thailand_tin.pdf) ---
+Success: {'document_id': 12, 'rules_created': 7}
+--- Processing Doc 11 (documents/2/panama_tin.pdf) ---
+Success: {'document_id': 11, 'rules_created': 5}
+--- Processing Doc 10 (documents/2/france_tin.pdf) ---
+Success: {'document_id': 10, 'rules_created': 6}

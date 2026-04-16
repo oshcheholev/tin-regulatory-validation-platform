@@ -1,10 +1,11 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { validationService, ruleService } from '@/services';
 import { Card, Button, Badge } from '@/components/common';
 import { CheckSquare, Upload, AlertCircle, CheckCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
 import type { ValidationResult } from '@/types';
+import Select from 'react-select';
 
 const ValidationPage: React.FC = () => {
   const [country, setCountry] = useState('');
@@ -63,6 +64,16 @@ const ValidationPage: React.FC = () => {
     batchMutation.mutate(formData);
   };
 
+  const countryOptions = useMemo(() => {
+    if (!countries) return [];
+    return countries.map(c => ({
+      value: c.code,
+      label: `${c.code} – ${c.name}`
+    }));
+  }, [countries]);
+
+  const selectedCountry = countryOptions.find(opt => opt.value === country) || null;
+
   return (
     <div className="space-y-8">
       <div>
@@ -76,18 +87,26 @@ const ValidationPage: React.FC = () => {
           <form onSubmit={handleValidate} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Country *</label>
-              <select
-                value={country}
-                onChange={(e) => setCountry(e.target.value)}
-                className="block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 bg-white"
-              >
-                <option value="">Select country...</option>
-                {countries?.results.map((c) => (
-                  <option key={c.code} value={c.code}>
-                    {c.code} – {c.name}
-                  </option>
-                ))}
-              </select>
+              <Select
+                options={countryOptions}
+                value={selectedCountry}
+                onChange={(option) => setCountry(option?.value || '')}
+                placeholder="Select or type country..."
+                isClearable
+                isSearchable
+                className="text-sm"
+                styles={{
+                  control: (base) => ({
+                    ...base,
+                    borderRadius: '0.5rem',
+                    borderColor: '#D1D5DB',
+                    minHeight: '42px',
+                    '&:hover': {
+                      borderColor: '#D1D5DB'
+                    }
+                  })
+                }}
+              />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">TIN *</label>

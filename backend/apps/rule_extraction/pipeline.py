@@ -29,7 +29,7 @@ def extract_text_from_pdf(file_path: str) -> tuple[str, int]:
         raise
 
 
-def chunk_text(text: str, chunk_size: int = 2000, overlap: int = 200) -> list[str]:
+def chunk_text(text: str, chunk_size: int = 15000, overlap: int = 500) -> list[str]:
     """Split text into overlapping chunks for processing."""
     chunks = []
     start = 0
@@ -42,227 +42,113 @@ def chunk_text(text: str, chunk_size: int = 2000, overlap: int = 200) -> list[st
     return chunks
 
 
-# Known TIN patterns per country (simplified OECD rules)
-COUNTRY_TIN_RULES = {
-    'US': {
-        'name': 'United States',
-        'rules': [
-            {
-                'rule_type': 'format',
-                'description': 'US EIN format: XX-XXXXXXX (9 digits)',
-                'regex_pattern': r'^\d{2}-\d{7}$',
-                'min_length': 10,
-                'max_length': 10,
-            },
-            {
-                'rule_type': 'format',
-                'description': 'US SSN format: XXX-XX-XXXX (9 digits)',
-                'regex_pattern': r'^\d{3}-\d{2}-\d{4}$',
-                'min_length': 11,
-                'max_length': 11,
-            },
-            {
-                'rule_type': 'format',
-                'description': 'US ITIN format: 9XX-XX-XXXX (starts with 9)',
-                'regex_pattern': r'^9\d{2}-\d{2}-\d{4}$',
-                'min_length': 11,
-                'max_length': 11,
-            },
-        ],
-    },
-    'GB': {
-        'name': 'United Kingdom',
-        'rules': [
-            {
-                'rule_type': 'format',
-                'description': 'UK UTR (Unique Taxpayer Reference): 10 digits',
-                'regex_pattern': r'^\d{10}$',
-                'min_length': 10,
-                'max_length': 10,
-            },
-            {
-                'rule_type': 'format',
-                'description': 'UK National Insurance Number: XX 99 99 99 X',
-                'regex_pattern': r'^[A-CEGHJ-PR-TW-Z]{2}\d{6}[A-D]$',
-                'min_length': 9,
-                'max_length': 9,
-            },
-        ],
-    },
-    'DE': {
-        'name': 'Germany',
-        'rules': [
-            {
-                'rule_type': 'format',
-                'description': 'German Tax ID (Steueridentifikationsnummer): 11 digits, first digit non-zero',
-                'regex_pattern': r'^[1-9]\d{10}$',
-                'min_length': 11,
-                'max_length': 11,
-            },
-        ],
-    },
-    'FR': {
-        'name': 'France',
-        'rules': [
-            {
-                'rule_type': 'format',
-                'description': 'French Tax ID (Numéro fiscal): 13 digits',
-                'regex_pattern': r'^\d{13}$',
-                'min_length': 13,
-                'max_length': 13,
-            },
-        ],
-    },
-    'CA': {
-        'name': 'Canada',
-        'rules': [
-            {
-                'rule_type': 'format',
-                'description': 'Canadian SIN: XXX-XXX-XXX (9 digits)',
-                'regex_pattern': r'^\d{3}-\d{3}-\d{3}$',
-                'min_length': 11,
-                'max_length': 11,
-            },
-        ],
-    },
-    'AU': {
-        'name': 'Australia',
-        'rules': [
-            {
-                'rule_type': 'format',
-                'description': 'Australian TFN: 8 or 9 digits',
-                'regex_pattern': r'^\d{8,9}$',
-                'min_length': 8,
-                'max_length': 9,
-            },
-        ],
-    },
-    'IN': {
-        'name': 'India',
-        'rules': [
-            {
-                'rule_type': 'format',
-                'description': 'Indian PAN: 5 uppercase letters + 4 digits + 1 uppercase letter',
-                'regex_pattern': r'^[A-Z]{5}\d{4}[A-Z]$',
-                'min_length': 10,
-                'max_length': 10,
-            },
-        ],
-    },
-    'CN': {
-        'name': 'China',
-        'rules': [
-            {
-                'rule_type': 'format',
-                'description': 'Chinese TIN for individuals: 18-digit Resident Identity Card number',
-                'regex_pattern': r'^\d{17}[\dX]$',
-                'min_length': 18,
-                'max_length': 18,
-            },
-        ],
-    },
-    'JP': {
-        'name': 'Japan',
-        'rules': [
-            {
-                'rule_type': 'format',
-                'description': 'Japanese My Number (Individual Number): 12 digits',
-                'regex_pattern': r'^\d{12}$',
-                'min_length': 12,
-                'max_length': 12,
-            },
-        ],
-    },
-    'NL': {
-        'name': 'Netherlands',
-        'rules': [
-            {
-                'rule_type': 'format',
-                'description': 'Dutch BSN (Burgerservicenummer): 9 digits with 11-proof check',
-                'regex_pattern': r'^\d{9}$',
-                'min_length': 9,
-                'max_length': 9,
-            },
-        ],
-    },
-}
-
 
 def extract_rules_from_text(text: str, document_id: int) -> list[dict]:
     """
-    Heuristic rule extraction from PDF text.
-    In production, this would call an AI/LLM API.
+    Rule extraction from PDF text using DeepSeek LLM.
     Returns a list of rule dictionaries.
     """
+    import os
+    import json
+    import requests
+    from dotenv import load_dotenv
+    
+    # Load .env into os.environ
+    # Walk up to find the .env file in the backend root
+    base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    env_path = os.path.join(base_dir, '.env')
+    load_dotenv(env_path)
+    # also try the root one for good measure
+    load_dotenv(os.path.join(os.path.dirname(base_dir), '.env'))
+    
+    api_key = os.environ.get("OPENROUTER_API_KEY")
+    if not api_key:
+        logger.error("OPENROUTER_API_KEY not found in environment.")
+        return []
+
+    # Limit text length to avoid token limits per chunk
+    # Usually chunking is done before this function, but just in case
+    text = text[:15000]
+
+    prompt = f"""You are a data extraction assistant for Tax Identification Number (TIN) rules.
+I will provide text extracted from an official OECD PDF.
+Your task is to identify and extract rules for TIN validation.
+Return the rules as a strictly formatted JSON array of dictionaries.
+Each dictionary MUST have the following keys (use EXACTLY these keys):
+- "country_code": The 2-letter ISO 3166-1 alpha-2 country code (e.g., "US", "DE")
+- "country_name": The full English name of the country.
+- "rule_type": One of "format", "length", "checksum", "character_set", "structure", or "other".
+- "description": A concise explanation of the format rule.
+- "regex_pattern": A valid PCRE/Python regular expression pattern that matches this TIN format (e.g., "^\\d{{9}}$").
+- "min_length": Integer representing the minimum length, or null.
+- "max_length": Integer representing the maximum length, or null.
+
+Only output valid JSON, no markdown formatting (like ```json), and no extra text.
+If no TIN formats or rules are found, output an empty array: []
+
+Text to analyze:
+{text}
+"""
+
     extracted_rules = []
+    try:
+        response = requests.post(
+            "https://openrouter.ai/api/v1/chat/completions",
+            headers={
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json"
+            },
+            json={
+                "model": "arcee-ai/trinity-large-preview:free",
+                "messages": [
+                    {"role": "system", "content": "You output only valid JSON arrays representing the requested data. No preamble or postamble."},
+                    {"role": "user", "content": prompt}
+                ],
+                "temperature": 0.0,
+            },
+            timeout=90
+        )
+        response.raise_for_status()
+        result_text = response.json()["choices"][0]["message"]["content"].strip()
+        
+        # Cleanup potential markdown wrapper
+        if result_text.startswith("```json"):
+            result_text = result_text[7:]
+        if result_text.startswith("```"):
+            result_text = result_text[3:]
+        if result_text.endswith("```"):
+            result_text = result_text[:-3]
+            
+        result_text = result_text.strip()
+        print("RAW OpenRouter Response:", result_text)
+        
+        # Sometime LLMs escape backslashes poorly for regexes. Remove single backslashes that shouldn't be there, or properly double them
+        result_text = result_text.replace('\\\\', '\\')
+        
+        # Or better yet we can use strict to false in json or just raw string replacement if python fails.
+        # But let's see what the actual response looks like first by printing it above.
 
-    # Look for country codes in text
-    country_pattern = re.compile(
-        r'\b(United States|USA|United Kingdom|UK|Germany|France|Canada|Australia|India|China|Japan|Netherlands)\b',
-        re.IGNORECASE
-    )
-    country_map = {
-        'united states': 'US', 'usa': 'US',
-        'united kingdom': 'GB', 'uk': 'GB',
-        'germany': 'DE',
-        'france': 'FR',
-        'canada': 'CA',
-        'australia': 'AU',
-        'india': 'IN',
-        'china': 'CN',
-        'japan': 'JP',
-        'netherlands': 'NL',
-    }
+        if result_text and result_text != "[]" and result_text.startswith("[") and result_text.endswith("]"):
+            try:
+                # The issue is typically unescaped backslashes in regexes
+                # e.g. "^\d{9}$" instead of "^\\d{9}$"
+                rules_data = json.loads(result_text)
+            except json.JSONDecodeError as de:
+                logger.error(f"JSON decode failed on: {result_text}")
+                # Naive fallback cleanup for backslashes
+                safe_text = result_text.replace("\\", "\\\\").replace("\\\\\\\\", "\\\\") 
+                rules_data = json.loads(safe_text)
 
-    found_countries = set()
-    for match in country_pattern.finditer(text):
-        country_name = match.group(0).lower()
-        if country_name in country_map:
-            found_countries.add(country_map[country_name])
+            for rule in rules_data:
+                rule['source_document_id'] = document_id
+                rule['confidence_score'] = 0.9
+                rule['raw_extraction'] = {'source': 'openrouter_llm'}
+                extracted_rules.append(rule)
 
-    # Add rules for found countries
-    for code in found_countries:
-        if code in COUNTRY_TIN_RULES:
-            for rule in COUNTRY_TIN_RULES[code]['rules']:
-                extracted_rules.append({
-                    'country_code': code,
-                    'country_name': COUNTRY_TIN_RULES[code]['name'],
-                    'source_document_id': document_id,
-                    'confidence_score': 0.85,
-                    'raw_extraction': {'source': 'text_extraction'},
-                    **rule,
-                })
-
+    except Exception as e:
+        logger.error(f"Error calling OpenRouter API or parsing result: {e}")
     return extracted_rules
 
-
 def seed_default_rules():
-    """Seed database with default TIN rules for common countries."""
-    from apps.rule_extraction.models import Country, TinRule
-
-    rules_to_create = []
-    for code, data in COUNTRY_TIN_RULES.items():
-        country, _ = Country.objects.get_or_create(
-            code=code,
-            defaults={'name': data['name']},
-        )
-        for rule_data in data['rules']:
-            exists = TinRule.objects.filter(
-                country=country,
-                rule_type=rule_data['rule_type'],
-                regex_pattern=rule_data.get('regex_pattern', ''),
-            ).exists()
-            if not exists:
-                rules_to_create.append(TinRule(
-                    country=country,
-                    rule_type=rule_data['rule_type'],
-                    description=rule_data['description'],
-                    regex_pattern=rule_data.get('regex_pattern', ''),
-                    min_length=rule_data.get('min_length'),
-                    max_length=rule_data.get('max_length'),
-                    confidence_score=1.0,
-                ))
-
-    if rules_to_create:
-        TinRule.objects.bulk_create(rules_to_create)
-        logger.info(f'Seeded {len(rules_to_create)} TIN rules')
+    """Deprecated. Hardcoded rules were removed. Use the pipeline logic instead."""
+    logger.info('seed_default_rules is deprecated')

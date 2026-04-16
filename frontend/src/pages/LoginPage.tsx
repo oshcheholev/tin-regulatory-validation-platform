@@ -29,8 +29,8 @@ const LoginPage: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-br from-primary-50 to-primary-100 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-primary-700">TIN Validation Platform</h1>
-          <p className="mt-2 text-gray-600">AI-powered regulatory compliance</p>
+          <h1 className="text-3xl font-bold text-primary-600">Bank Austria</h1>
+          <p className="mt-2 text-gray-600">TIN Validation Platform</p>
         </div>
 
         <Card>

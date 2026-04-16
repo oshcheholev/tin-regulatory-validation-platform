@@ -33,10 +33,10 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     <div className="flex h-screen bg-gray-50">
       {/* Sidebar */}
       <aside className="w-64 bg-white border-r border-gray-200 flex flex-col">
-        <div className="p-6 border-b border-gray-200">
-          <h1 className="text-lg font-bold text-primary-700 leading-tight">
-            TIN Validation<br />
-            <span className="text-xs font-normal text-gray-500">Regulatory Platform</span>
+        <div className="p-6 border-b border-gray-200 flex flex-col items-start gap-2">
+          <img src="/bank_austria_logo.png" alt="Bank Austria Logo" className="h-9 object-contain" />
+          <h1 className="text-lg font-bold text-primary-600 leading-tight">
+            <span className="text-xs font-normal text-gray-500">TIN Validation Platform</span>
           </h1>
         </div>
 

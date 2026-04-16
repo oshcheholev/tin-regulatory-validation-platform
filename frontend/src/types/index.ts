@@ -43,10 +43,12 @@ export interface Document {
   status: 'pending' | 'processing' | 'completed' | 'failed';
   error_message: string;
   page_count: number;
+  extracted_text?: string;
   uploaded_by_email: string;
   task_id: string;
   created_at: string;
   updated_at: string;
+  rules_count: number;
 }
 
 // Country & Rule types
@@ -65,7 +67,7 @@ export interface TinRule {
   source_document_title: string | null;
   rule_type: string;
   description: string;
-  regex_pattern: string;
+  regex_pattern: string | null;
   min_length: number | null;
   max_length: number | null;
   is_active: boolean;

@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/mnt/c/bank_austria/backend/test_api2.py", line 6, in <module>
+    from users.models import User
+ModuleNotFoundError: No module named 'users'

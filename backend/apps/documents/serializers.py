@@ -6,22 +6,27 @@ from .models import RuleSourceDocument
 class RuleSourceDocumentSerializer(serializers.ModelSerializer):
     uploaded_by_email = serializers.EmailField(source='uploaded_by.email', read_only=True)
     file_url = serializers.SerializerMethodField()
+    rules_count = serializers.SerializerMethodField()
 
     class Meta:
         model = RuleSourceDocument
         fields = [
             'id', 'title', 'description', 'file_url', 'file_size',
             'file_hash', 'status', 'error_message', 'page_count',
-            'uploaded_by_email', 'task_id', 'created_at', 'updated_at',
+            'uploaded_by_email', 'task_id', 'created_at', 'updated_at', 
+            'extracted_text', 'rules_count',
         ]
         read_only_fields = ['id', 'file_size', 'file_hash', 'status', 'error_message',
-                            'page_count', 'task_id', 'created_at', 'updated_at']
+                            'page_count', 'task_id', 'created_at', 'updated_at', 'extracted_text']
 
     def get_file_url(self, obj):
         request = self.context.get('request')
         if obj.file and request:
             return request.build_absolute_uri(obj.file.url)
         return None
+
+    def get_rules_count(self, obj):
+        return obj.tin_rules.count()
 
 
 class DocumentUploadSerializer(serializers.ModelSerializer):

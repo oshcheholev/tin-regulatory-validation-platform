@@ -41,12 +41,16 @@ export const documentService = {
   get: (id: number) => api.get<Document>(`/documents/${id}/`).then((r) => r.data),
 
   delete: (id: number) => api.delete(`/documents/${id}/`),
+
+  syncOECD: () => api.post('/documents/oecd-sync/').then((r) => r.data),
+
+  getSyncStatus: () => api.get('/documents/oecd-sync/').then((r) => r.data),
 };
 
 // Countries & Rules
 export const ruleService = {
   listCountries: () =>
-    api.get<PaginatedResponse<Country>>('/rules/countries/').then((r) => r.data),
+    api.get<Country[]>('/rules/countries/').then((r) => r.data),
 
   getCountry: (code: string) =>
     api.get<Country>(`/rules/countries/${code}/`).then((r) => r.data),
@@ -55,6 +59,9 @@ export const ruleService = {
     api.get<PaginatedResponse<TinRule>>('/rules/', { params }).then((r) => r.data),
 
   getRule: (id: number) => api.get<TinRule>(`/rules/${id}/`).then((r) => r.data),
+
+  listRulesByDocument: (documentId: number) =>
+    api.get<PaginatedResponse<TinRule>>(`/rules/`, { params: { document_id: documentId.toString() } }).then((r) => r.data),
 };
 
 // Validation
